@@ -1,3 +1,3 @@
-class Todo < ApplicationRecord
-  validates :title, presence: true
+class Todo < ActiveRecord::Base
+  validates :title,  presence: true
 end
