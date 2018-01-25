@@ -1,11 +1,12 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:show, :update, :destroy]
+  before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
   # GET /todos
   # GET /todos.json
   def index
-    @todo = Todo.new
     @todos = Todo.all
+    @todo = Todo.new
+
 
     if params[:q].present?
       @todos = @todos.where('title ILIKE ?', "%#{params[:q]}%")
@@ -24,10 +25,10 @@ class TodosController < ApplicationController
 
     respond_to do |format|
       if @todo.save
-        format.html { redirect_to root_path, notice: 'Todo was successfully created.' }
+        format.html { redirect_to todos_path, notice: 'Todo was successfully created.' }
         format.json { render :show, status: :created, location: @todo }
       else
-        format.html { render :index }
+        format.html { redirect_to todos_path }
         format.json { render json: @todo.errors, status: :unprocessable_entity }
       end
     end
@@ -58,13 +59,13 @@ class TodosController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_todo
-      @todo = Todo.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_todo
+    @todo = Todo.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def todo_params
-      params.require(:todo).permit(:title, :completed)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def todo_params
+    params.require(:todo).permit(:title, :completed)
+  end
 end
